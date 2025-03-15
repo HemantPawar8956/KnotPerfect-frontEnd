@@ -1,0 +1,133 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #fff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #d63384;
+}
+
+.navLinks {
+  display: flex;
+  list-style: none;
+  justify-content: space-around;
+  gap: 20px;
+  width: 70%;
+}
+
+.navItem {
+  position: relative;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18 px;
+  font-weight: 500;
+  color: #333;
+  transition: color 0.3s;
+}
+
+.navItem:hover {
+  color: #d63384;
+  background-color: rgba(133, 133, 133, 0.295);
+}
+
+.dropdownContainer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fdfcfc;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  display: flex;
+  gap: 20px;
+  max-width: 600px;
+  overflow: auto;
+  border-radius: 5px;
+  z-index: 1000;
+  padding: 10px;
+}
+.dropdownColumn {
+  padding: 5px;
+  min-width: 100px;
+}
+.dropdownColumn h4 {
+  font-size: 14px;
+  font-weight: bold;
+  color: #d63384;
+  margin-bottom: 10px;
+}
+
+.dropdownItem {
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+  padding: 5px 0;
+  transition: color 0.3s;
+}
+
+.dropdownItem:hover {
+  color: #d63384;
+}
+
+.menuIcon {
+  display: none;
+}
+
+.mobileMenu {
+  background-color: #3333337e !important;
+  height: 100vh;
+  position: relative;
+  width: 100vw !important;
+  display: none;
+  padding: 0px !important;
+}
+.mobileMenu .mobileMenuItem {
+  padding: 10px;
+  height: 100%;
+  position: absolute;
+  right: 0px;
+  background-color: white;
+  max-width: fit-content;
+}
+@media (max-width: 768px) {
+  .navLinks {
+    display: none;
+  }
+  .menuIcon {
+    display: block;
+  }
+  .mobileMenu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    padding: 15px;
+    z-index: 1000;
+  }
+  .mobileNavItem {
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  .mobileNavItem:hover {
+    color: #d63384;
+  }
+  .mobileLoginButton {
+    padding: 10px;
+    margin-top: 20px;
+  }
+}

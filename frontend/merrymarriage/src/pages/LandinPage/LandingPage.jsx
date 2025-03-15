@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./LandingPage.module.css";
 import { Toaster, toast } from "react-hot-toast";
+import axios from "axios";
+import { AuthContext } from "../../GlobalContext/GlobalContext";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(true);
   const [userType, setUserType] = useState("user");
   const [formData, setFormData] = useState({
@@ -10,6 +14,7 @@ const LandingPage = () => {
     email: "",
     password: "",
   });
+  const { userLogin } = useContext(AuthContext);
 
   const handleToggleForm = () => setIsSignUp(!isSignUp);
 
@@ -45,16 +50,35 @@ const LandingPage = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     if (isSignUp) {
+      try {
+        let response = await axios.post(
+          "http://localhost:8000/user/userLogin",
+          formData
+        );
+        console.log(response);
+      } catch (error) {}
       toast.success("Sign-up successful! Welcome to Knot Perfect!");
-      console.log("Sign-up data:", { ...formData, userType });
     } else {
-      toast.success("Login successful! Welcome back!");
-      console.log("Login data:", { email: formData.email, password: formData.password });
+      try {
+        let response = await axios.post(
+          "http://localhost:8000/user/userLogin",
+          formData
+        );
+        if (response.status == 200) {
+          toast.success(response.data.message);
+        } else {
+          toast.error(response.data.message);
+        }
+        localStorage.setItem("token", response.data.token);
+        userLogin(navigate);
+      } catch (error) {
+        toast.success(error.message);
+      }
     }
   };
 
@@ -89,7 +113,10 @@ const LandingPage = () => {
           </div>
         </div>
 
-        <div className={`${styles.signupFormBox} ${isSignUp ? styles.active : ""}`}>
+        <div
+          className={`${styles.signupFormBox} ${
+            isSignUp ? styles.active : ""
+          }`}>
           <h2 className={styles.formTitle}>{isSignUp ? "Sign Up" : "Login"}</h2>
 
           <form className={styles.signupForm} onSubmit={handleSubmit}>
@@ -157,9 +184,12 @@ const LandingPage = () => {
             <button
               type="button"
               className={styles.googleSignInBtn}
-              onClick={handleGoogleSignIn}
-            >
-              <img src="/assets/google.png" alt="Google Logo" className={styles.googleLogo} />
+              onClick={handleGoogleSignIn}>
+              <img
+                src="/assets/google.png"
+                alt="Google Logo"
+                className={styles.googleLogo}
+              />
               {isSignUp ? "Sign Up with Google" : "Login with Google"}
             </button>
           </form>
@@ -170,18 +200,18 @@ const LandingPage = () => {
                 <>
                   Already a member?
                   <strong>
-                    <a href="#" onClick={handleToggleForm} className={styles.loginLine}>
+                    <button
+                      onClick={handleToggleForm}
+                      className={styles.loginLine}>
                       Login here
-                    </a>
+                    </button>
                   </strong>
                 </>
               ) : (
                 <>
                   Don't have an account yet?{" "}
                   <strong>
-                    <a href="#" onClick={handleToggleForm}>
-                      Sign up now
-                    </a>
+                    <button onClick={handleToggleForm}>Sign up now</button>
                   </strong>
                 </>
               )}

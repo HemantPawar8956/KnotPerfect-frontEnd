@@ -1,40 +1,44 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 // Private Route Handler
-import Home from "./../pages/Home";
-import Login from "./../pages/Login";
-import Signup from "./../pages/Signup";
+import Home from "../pages/Home/Home";
+
 import PageNotFound from "./../pages/PageNotFound/PageNotFound";
 import AdminDashboard from "./../admin/AdminDashboard";
 import VendorDashboard from "./../vendor/VendorDashboard";
 import PrivateRoute from "./../auth/PrivateRoute";
 import UserDashboard from "../user/UserDashBoard/UserDashboard";
+import LandingPage from "../pages/LandinPage/LandingPage";
 
 const router = createBrowserRouter([
-  { path: "/", element: <Home /> },
-  { path: "/login", element: <Login /> },
-  { path: "/register", element: <Signup /> },
-
-  // Admin Routes (Protected)
+  { path: "/", element: <LandingPage /> },
   {
-    path: "/admin",
-    element: <PrivateRoute allowedRoles={["admin"]} />,
-    children: [{ index: true, element: <AdminDashboard /> }],
+    path: "/home",
+    element: <Home />,
+    children: [
+      // Admin Routes (Protected)
+      {
+        path: "/home/admin",
+        element: <PrivateRoute allowedRoles={["admin"]} />,
+        children: [{ index: true, element: <AdminDashboard /> }],
+      },
+
+      // User Routes (Protected)
+      {
+        path: "/home/user",
+        element: <PrivateRoute allowedRoles={["user"]} />,
+        children: [{ index: true, element: <UserDashboard /> }],
+      },
+
+      // Vendor Routes (Protected)
+      {
+        path: "/home/vendor",
+        element: <PrivateRoute allowedRoles={["vendor"]} />,
+        children: [{ index: true, element: <VendorDashboard /> }],
+      },
+    ],
   },
 
-  // User Routes (Protected)
-  {
-    path: "/user",
-    element: <PrivateRoute allowedRoles={["user"]} />,
-    children: [{ index: true, element: <UserDashboard /> }],
-  },
-
-  // Vendor Routes (Protected)
-  {
-    path: "/vendor",
-    element: <PrivateRoute allowedRoles={["vendor"]} />,
-    children: [{ index: true, element: <VendorDashboard /> }],
-  },
   { path: "*", element: <PageNotFound /> },
 ]);
 
